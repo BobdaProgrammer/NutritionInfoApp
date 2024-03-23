@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let detected = false
   Quagga.onDetected(function (result) {
     if (!detected) {
+      document.getElementById("foodname").innerHTML="found. retrieving data ..."
       detected =true
       console.log(result)
       fetch(`https://world.openfoodfacts.org/api/v2/product/${result.codeResult.code}.json`)

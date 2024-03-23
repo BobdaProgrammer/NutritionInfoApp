@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!detected) {
       document.getElementById("foodname").innerHTML="found. retrieving data ..."
       detected =true
-      console.log(result)
       fetch(`https://world.openfoodfacts.org/api/v2/product/${result.codeResult.code}.json`)
         .then(response => {
           console.log(response)

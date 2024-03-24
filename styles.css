@@ -53,3 +53,13 @@ body {
   max-width: 20em; /* Make images responsive */
   height: auto;
  }
+
+ @media (max-width: 600px){
+  img{
+    position: relative;
+    left: 0%;
+    top: 0%;
+    max-width: 18em; /* Make images responsive */
+    height: auto;
+  }
+ }

@@ -1,6 +1,55 @@
-#barcode-scanner {
-    width: min-content;
-    height: 25em;
-    border: 1px solid #ccc;
-    position: relative;
-  }
+body {
+  background-color: #f0f0f0; /* Light grey background */
+  font-family: Arial, sans-serif; /* Use a readable font */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+ }
+
+ button{
+  background-color: turquoise;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: white;
+ }
+ 
+ .main {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #ffffff; /* White background for the main container */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 80%; /* Limit the width to make it look less cluttered */
+  max-width: 600px; /* Ensure it doesn't get too wide on large screens */
+ }
+ 
+ #reader {
+  width: 100%; /* Make the reader responsive */
+  margin-bottom: 20px; /* Space between the reader and results */
+  border-radius: 10px;
+ }
+ 
+ #result {
+  display: none;
+  max-height: auto; /* Allow the results to expand as needed */
+  text-align: left;
+  padding: 20px;
+  border: 1px solid #ddd; /* Light border around the results */
+  border-radius: 5px; /* Rounded corners for the results */
+  background-color: #f9f9f9; /* Light grey background for the results */
+ }
+ 
+ h2, h4 {
+  margin-bottom: 10px; /* Space between headings and content */
+ }
+ 
+ img {
+  position: absolute;
+  left:45%;
+  top: 35%;
+  max-width: 20em; /* Make images responsive */
+  height: auto;
+ }

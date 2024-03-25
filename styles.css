@@ -14,7 +14,7 @@ body {
   border-radius: 5px;
   color: white;
  }
- 
+
  .main {
   text-align: center;
   margin-top: 50px;
@@ -46,20 +46,16 @@ body {
   margin-bottom: 10px; /* Space between headings and content */
  }
  
- img {
-  position: absolute;
-  left:45%;
-  top: 35%;
-  max-width: 20em; /* Make images responsive */
-  height: auto;
+ img{
+  max-width: 12em;
+  max-height: 12em;
  }
-
- @media (max-width: 600px){
-  img{
-    position: relative;
-    left: 0%;
-    top: 0%;
-    max-width: 18em; /* Make images responsive */
-    height: auto;
-  }
+ #imghold{
+  max-height: auto; /* Allow the results to expand as needed */
+  display: none;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd; /* Light border around the results */
+  border-radius: 5px; /* Rounded corners for the results */
+  background-color: #f9f9f9; /* Light grey background for the results */
  }

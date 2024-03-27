@@ -20,7 +20,7 @@ function loadmeals(mealname) {
   if (meal != null) {
       let res = `<h5>${
         mealname[0].toUpperCase() + mealname.slice(1, mealname.length)
-      }:</h5>`;
+      }:</h5><br>`;
       meal = JSON.parse(meal)
     for (let i = 0; i < meal.length; i++) {
         res += `<label>`
@@ -74,9 +74,8 @@ function meal(mealname) {
     item = document.getElementById("hundred");
   }
   let res =
-    "<br>" +
     document.getElementById("name").innerText +
-    "<br>" +
+    "," +
     item.innerHTML.slice(item.id == "hundred" ? 0 : 23, item.innerHTML.length);
   let pos = findIndexWithSubstring(
     meal,

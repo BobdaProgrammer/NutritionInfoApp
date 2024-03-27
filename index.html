@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nutrition Info App</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Info App</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="main">
-    <div id="imghold"></div>
-  <div id="reader"></div>
-  <div id="result"></div>
-  </div>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <script src="index.js">
-  </script>
+    <div class="placeholder">
+    <div class="navbar"><button onclick="window.location.href='scan.html'">Scan an Item</button></div>
+    </div>
+    <div class="today">
+        <div class="meal-section breakfast"></div>
+        <div class="meal-section lunch"></div>
+        <div class="meal-section dinner"></div>
+        <div class="meal-section snack"></div>
+    </div>
+    <script src="index.js"></script>
 </body>
 </html>

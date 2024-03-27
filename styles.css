@@ -65,3 +65,51 @@ body {
   border-radius: 5px; /* Rounded corners for the results */
   background-color: #f9f9f9; /* Light grey background for the results */
  }
+
+ .navbar {
+  border-bottom: 1px solid aquamarine;
+  box-shadow: 0 0 30px aquamarine;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center; /* Center the button */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  background-color: white; /* Ensure the navbar has a background */
+ }
+ 
+ .today {
+  border: 2px solid aquamarine;
+  border-radius: 10px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column; /* Stack meal sections vertically */
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  min-height: 100px;
+  margin-top: 5em;
+
+ }
+ .meal-section{
+  vertical-align: text-top;
+  border: 2px solid aquamarine;
+  padding: 2px;
+  border-radius: 10px;
+  min-height: 1em;
+ }
+ .mealname{
+  vertical-align: top;
+ }
+
+ .placeholder{
+  position: absolute;
+  top: 0%;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 20px;
+  height: fit-content;
+ }
+ 

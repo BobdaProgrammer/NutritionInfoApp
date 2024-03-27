@@ -7,8 +7,41 @@
   });
   scanner.render(success, error)
 
-function breakfast() {
+  function findIndexWithSubstring(array, substring) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].includes(substring)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
+
+function meal(mealname) {
+  let meal = localStorage.getItem(mealname)
+  if (meal == null) {
+    meal=[]
+  }
+  else {
+    meal = JSON.parse(meal)
+  }
+  let item = document.getElementById("custom");
+  if (item.innerHTML.length == 0) {
+    item = document.getElementById("hundred")
+  }
+  console.log(meal)
+  let res =
+    document.getElementById("name").innerText +
+    "," +
+    item.innerHTML.slice(item.id == "hundred" ? 0 : 23, item.innerHTML.length);
+  let pos = findIndexWithSubstring(meal,document.getElementById("name").innerText)
+  if (pos!=-1) {
+    meal[pos] = res
+    localStorage.setItem(mealname, JSON.stringify(meal));
+    return
+  }
+  meal.push(res)
+  localStorage.setItem(mealname, JSON.stringify(meal))
 }
 
 function custom(event) {
@@ -21,9 +54,8 @@ function custom(event) {
                 custom.innerHTML +=
                   splitline[0] +
                   ": " +
-                  JSON.stringify(
-                    Number(splitline[1]) * (Number(event.target.value)/100)
-                  ) +
+                    (Number(splitline[1]) * (Number(event.target.value)/100)).toFixed(2)
+                   +
                   "<br>";
               }
 }
@@ -56,7 +88,7 @@ function success(result) {
         let val = 0;
         let serve = false;
 
-        resultEl.innerHTML = `<center><h2>${data["product"]["product_name"]}</h2><h5>Last updated: ${data["product"]["last_edit_dates_tags"][0]}</h5>Add to:<br><button onclick="breakfast()">Breakfast</button><button onclick="lunch()">Lunch</button><button onclick="dinner()">Dinner</button><button onclick="snack()">Snack</button><br><input style="margin-top: 8px" class="selector" type="number" onchange="custom(event)" min=0>g</center><div id="custom"></div><h4>Typical values per 100g:</h4></center>`;
+        resultEl.innerHTML = `<center><button onclick="location.reload()">Scan new item</button><h2 id="name">${data["product"]["product_name"]}</h2><h5>Last updated: ${data["product"]["last_edit_dates_tags"][0]}</h5>Add to:<br><button onclick="meal('breakfast')">Breakfast</button><button onclick="meal('lunch')">Lunch</button><button onclick="meal('dinner')">Dinner</button><button onclick="meal('snack')">Snack</button><br><input value=100 style="margin-top: 8px" class="selector" type="number" onchange="custom(event)" min=0>g</center><div id="custom"></div><h4>Typical values per 100g:</h4></center>`;
         let res = `<div id="hundred">`
         // Loop through the keys of the nutriments object
         Object.keys(nutriments).forEach((key) => {
@@ -77,7 +109,7 @@ function success(result) {
         });
         res+="</div>"
         if (nutriments["carbohydrates_serving"] != undefined) {
-          res += `<h4>Typical values per serving:</h4>`;
+          res += `<h4>Typical values per serving (${(nutriments["carbohydrates_serving"]/nutriments["carbohydrates_value"])*100}g): </h4>`;
           Object.keys(nutriments).forEach((key) => {
             if (key.endsWith("_serving")) {
               name = key.split("_")[0].split("-").join(" ");

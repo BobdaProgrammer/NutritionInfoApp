@@ -29,7 +29,6 @@ function meal(mealname) {
   if (item.innerHTML.length == 0) {
     item = document.getElementById("hundred")
   }
-  console.log(meal)
   let res =
     document.getElementById("name").innerText +
     "," +
@@ -68,13 +67,11 @@ function success(result) {
     fetch(`https://world.openfoodfacts.org/api/v2/product/${result}.json`)
       .then(response => {
         if (response.status == "0") {
-          console.log("couldn't find item")
         }
         return response.json();
       })
       .then(data => {
         if (data.status == 0) {
-          console.log("couldn't find product");
           resultEl.innerHTML =
             "<div style='text-align: center;'>Could't find item please try again<br><button onclick='location.reload()'>Try again</button></div>";
           return;
@@ -83,7 +80,6 @@ function success(result) {
           "imghold"
         ).innerHTML = `</div><img src="${data["product"]["image_url"]}"><br>`;
         let nutriments = data["product"]["nutriments"];
-        console.log(data);
         let name = "";
         let val = 0;
         let serve = false;

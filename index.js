@@ -120,6 +120,7 @@ function score(lett, scoreType) {
 }
 
 function success(result) {
+  console.log(result);
   let resultEl = document.getElementById("result");
   resultEl.style.display = "block";
   document.getElementById("imghold").style.display = "block";

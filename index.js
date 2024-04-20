@@ -133,6 +133,7 @@ function success(result) {
           "<div style='text-align: center;'>Could't find item please try again<br><button onclick='location.reload()'>Try again</button></div>";
         return;
       }
+      console.log(data)
       document.getElementById(
         "imghold"
       ).innerHTML = `</div><img src="${data["product"]["image_url"]}"><br>`;
@@ -205,10 +206,26 @@ function success(result) {
       let nutriscore = data["product"]["nutriscore_grade"];
       res += score(nutriscore, "Nutri Score: ") + "<br>";
       let ecoscrore = data["product"]["ecoscore_grade"];
-      res += score(ecoscrore, "Eco Score: ");
+      res += score(ecoscrore, "Eco Score: ")+"<br>";
+      let novascore = Number(data["product"]["nova_group"]);
+      console.log(novascore)
+      res += nova(novascore, "Nova group: ");
       resultEl.innerHTML += res;
     })
     .catch((error) => {});
   scanner.clear();
 }
-function error(err) {}
+function error(err) { }
+function nova(score, text) {
+    let nutri = "";
+    nutri += `<span id='nova'>${text}</span>`;
+    nutri +=
+      score == 1
+        ? "<label for='nova' style='color:green;'>1</label>"
+        : score == 2
+        ? "<label for='nova' style='color:blue;'>2</label>"
+        : score == 3
+        ? "<label for='nova' style='color:orange;'>3</label>"
+        : `<label for='nova' style='color:red;'>${isNaN(score)?score.toUpperCase():score}</label>`;
+    return nutri;
+}

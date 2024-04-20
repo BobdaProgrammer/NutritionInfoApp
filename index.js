@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  if (document.location.pathname == "/index.html") {
     loadmeals("breakfast")
     loadmeals("lunch")
     loadmeals("dinner")
@@ -9,9 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
         event.target.parentElement.children[2].innerText = event.target.value;
       })
     });
-  } else if (document.location.pathname == "/") {
-    document.location.pathname = "/index.html"
-  }
 });
 
 function loadmeals(mealname) {

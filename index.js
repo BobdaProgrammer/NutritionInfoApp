@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-    loadmeals("breakfast")
-    loadmeals("lunch")
-    loadmeals("dinner")
-    loadmeals("snack")
+      let today = new Date();
+      let dd = String(today.getDate()).padStart(2, "0");
+      let mm = String(today.getMonth() + 1).padStart(2, "0");
+      let yyyy = today.getFullYear();
+      //the british way 😃:
+      today = dd + "/" + mm + "/" + yyyy;
+    loadmeals("breakfast",today)
+    loadmeals("lunch",today)
+    loadmeals("dinner",today)
+    loadmeals("snack",today)
     document.querySelectorAll(".valpick").forEach(picker =>  {
       picker.addEventListener("input", function (event) {
         event.target.parentElement.children[2].innerText = event.target.value;
@@ -10,32 +16,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function loadmeals(mealname) {
+function loadmeals(mealname,today) {
   let meal = localStorage.getItem(mealname);
   let section = document.querySelector("." + mealname)
   if (meal != null) {
-      let res = `<h5>${
+      let res = `<strong>${
         mealname[0].toUpperCase() + mealname.slice(1, mealname.length)
-      }:</h5><br>`;
-      meal = JSON.parse(meal)
-    for (let i = 0; i < meal.length; i++) {
+      }:</strong><br>`;
+    meal = JSON.parse(meal)
+    if (meal[0] == today) {
+      meal = meal.slice(1, meal.length);
+      for (let i = 0; i < meal.length; i++) {
         res += `<label>`
         let vals = meal[i].split(",")[1]
         let name = meal[i].split(",")[0]
         res += `<p>${name}</p><select class="valpick">`
         vals = vals.split("<br>")
         let firstval = 0
-        for (let i = 0; i < vals.length-1; i++){
+        for (let i = 0; i < vals.length - 1; i++) {
           let parts = vals[i].split(": ");
           let key = parts[0];
           let val = parts[1];
-          if(i==0) firstval = val
-          res+=`<option value='${val}'>${key}</option>`
+          if (i == 0) firstval = val
+          res += `<option value='${val}'>${key}</option>`
         }
-      res += "</select>"
+        res += "</select>"
         res += `<p>${firstval}</p></label>`;
       }
-        section.innerHTML = res;
+    }
+      section.innerHTML = res;
   }
 }
 
@@ -65,6 +74,13 @@ function meal(mealname) {
   } else {
     meal = JSON.parse(meal);
   }
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0");
+  let yyyy = today.getFullYear();
+  //the british way 😃:
+  today = dd + "/" + mm + "/" + yyyy;
+  meal[0] = today;
   let item = document.getElementById("custom");
   if (item.innerHTML.length == 0) {
     item = document.getElementById("hundred");

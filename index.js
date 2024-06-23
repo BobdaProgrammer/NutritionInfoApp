@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+  if (window.location.href.split("?")[0].endsWith("search.html")) {
+    let Params = new URLSearchParams(document.location.search)
+    let query = Params.get("query")
+    search(query)
+  }
+
       let today = new Date();
       let dd = String(today.getDate()).padStart(2, "0");
       let mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -47,7 +53,6 @@ function loadmeals(mealname,today) {
       section.innerHTML = res;
   }
 }
-
 
 const scanner = new Html5QrcodeScanner("reader", {
   qrbox: {
@@ -130,9 +135,42 @@ function score(lett, scoreType) {
       : `<label for='nutri' style='color:red;'>${lett.toUpperCase()}</label>`;
   return nutri;
 }
+/*//https://world.openfoodfacts.org/cgi/search.pl?search_terms=coke&search_simple=1&action=process&json=true&page_size=20&page_count=1&fields=product_name,image_url,id
+function search(query) {
+  console.log(query)
+  fetch(
+    `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${query}&search_simple=1&action=process&json=true&page_size=20&page_count=1&fields=product_name,image_url,id`
+  ).then((response) => { 
+    if (response.status == "0") {
+      
+    }
+    return response.json();
+  }).then((data) => { 
+    let resultEl = document.getElementById("result");
+    resultEl.style.display = "block"
+    if (!data["products"]) {
+      resultEl.innerHTML = "No Items Found."
+      return;
+    }
+    products = data["products"]
+    console.log(products)
+    try {
+      products.forEach((product) => {
+        console.log(product)
+        let item = document.createElement("div")
+        item.classList = "item"
+        item.onclick = `window.location.href="scan.html"; success(${product["id"]})`
+        item.innerHTML = `<img style="fit-object;contain;" src="${product["image_url"]}"><p>${product["product_name"]}</p>`
+        resultEl.appendChild(item);
+      });
+    } catch (e) {
+      console.log(e)
+    }
+  });
+}*/
+
 
 function success(result) {
-  console.log(result);
   let resultEl = document.getElementById("result");
   resultEl.style.display = "block";
   document.getElementById("imghold").style.display = "block";
@@ -157,75 +195,87 @@ function success(result) {
       let name = "";
       let val = 0;
       let serve = false;
-      let allergenslist = data["product"]["allergens_from_ingredients"]
-        .replace(/ /g, "")
-        .split(",");
-      let allergens = [...new Set(allergenslist)];
-      allergens = allergens.join(", ");
-      resultEl.innerHTML = `<center><button onclick="location.reload()">Scan new item</button><h2 id="name">${data["product"]["product_name"]}</h2><h5>Last updated: ${data["product"]["last_edit_dates_tags"][0]}</h5>Add to:<br><button onclick="meal('breakfast')">Breakfast</button><button onclick="meal('lunch')">Lunch</button><button onclick="meal('dinner')">Dinner</button><button onclick="meal('snack')">Snack</button><br><input value=100 style="margin-top: 8px" class="selector" type="number" onchange="custom(event)" min=0>g</center><div id="custom"></div></center><br>Additives: ${data["product"]["additives_n"]}<br>Allergens found in ingredients: ${allergens}<br><h4>Typical values per 100g:</h4>`;
-      let res = `<div id="hundred">`;
+        let allergenslist = data["product"]["allergens_from_ingredients"]
+          .replace(/ /g, "")
+          .split(",");
+        let allergens = [...new Set(allergenslist)];
+        allergens = allergens.join(", ");
+        resultEl.innerHTML = `<center><button onclick="location.reload()">Scan new item</button><h2 id="name">${data["product"]["product_name"]}</h2><h5>Last updated: ${data["product"]["last_edit_dates_tags"][0]}</h5>Add to:<br><button onclick="meal('breakfast')">Breakfast</button><button onclick="meal('lunch')">Lunch</button><button onclick="meal('dinner')">Dinner</button><button onclick="meal('snack')">Snack</button><br><input value=100 style="margin-top: 8px" class="selector" type="number" onchange="custom(event)" min=0>g</center><div id="custom"></div></center><br>Additives: ${data["product"]["additives_n"]}<br>${allergens?`Allergens found in ingredients: ${allergens}<br>`:""}<h4>Typical values per 100g:</h4>`;
+        let res = `<div id="hundred">`;
       // Loop through the keys of the nutriments object
-      Object.keys(nutriments).forEach((key) => {
-        if (!key.includes("_")) {
-          if (name == "" || !key.startsWith(name)) {
-            name = key;
-            val = nutriments[key];
-            serve = true;
-          }
-        } else if (serve && key.endsWith("_unit")) {
-          let unit = nutriments[key];
-          res +=
-            name[0].toUpperCase() +
-            name.slice(1, name.length) +
-            ` (${unit}): ${val}<br>`;
-          serve = false;
-        }
-      });
-      res += "</div>";
-      if (nutriments["carbohydrates_serving"] != undefined) {
-        res += `<h4>Typical values per serving (${
-          (nutriments["carbohydrates_serving"] /
-            nutriments["carbohydrates_value"]) *
-          100
-        }g): </h4>`;
+      try {
         Object.keys(nutriments).forEach((key) => {
-          if (key.endsWith("_serving")) {
-            name = key.split("_")[0].split("-").join(" ");
-            val = nutriments[key];
-            serve = true;
-          } else if (serve) {
-            if (key.endsWith("_unit")) {
-              let str = key.split("-");
-              let unit = nutriments[key];
-              if (
-                str.length == 1 ||
-                !str[1].toLowerCase().startsWith(unit.toLowerCase())
-              ) {
-                res +=
-                  name[0].toUpperCase() +
-                  name.slice(1, name.length) +
-                  ` (${unit}): ${val}<br>`;
-              }
+          if (!key.includes("_")) {
+            if (name == "" || !key.startsWith(name)) {
+              name = key;
+              val = nutriments[key];
+              serve = true;
             }
+          } else if (serve && key.endsWith("_unit")) {
+            let unit = nutriments[key];
+            res +=
+              name[0].toUpperCase() +
+              name.slice(1, name.length) +
+              ` (${unit}): ${val}<br>`;
             serve = false;
           }
         });
       }
-      res += "<h5>Ingredients:</h5>";
-      for (let i = 0; i < data["product"]["ingredients"].length; i++) {
-        res +=
-          `<li>${data["product"]["ingredients"][i]["text"]}</li><br>`.replace(
-            /_/g,
-            ""
-          );
+      catch (error) {}
+      res += "</div>";
+      if (nutriments["carbohydrates_serving"] != undefined) {
+        res += `<h4>Typical values per serving (${(nutriments["carbohydrates_serving"] /
+            nutriments["carbohydrates_value"]) *
+          100
+          }g): </h4>`;
+        try {
+          Object.keys(nutriments).forEach((key) => {
+            if (key.endsWith("_serving")) {
+              name = key.split("_")[0].split("-").join(" ");
+              val = nutriments[key];
+              serve = true;
+            } else if (serve) {
+              if (key.endsWith("_unit")) {
+                let str = key.split("-");
+                let unit = nutriments[key];
+                if (
+                  str.length == 1 ||
+                  !str[1].toLowerCase().startsWith(unit.toLowerCase())
+                ) {
+                  res +=
+                    name[0].toUpperCase() +
+                    name.slice(1, name.length) +
+                    ` (${unit}): ${val}<br>`;
+                }
+              }
+              serve = false;
+            }
+          });
+        } catch (error) {}
       }
-      let nutriscore = data["product"]["nutriscore_grade"];
-      res += score(nutriscore, "Nutri Score: ") + "<br>";
-      let ecoscrore = data["product"]["ecoscore_grade"];
-      res += score(ecoscrore, "Eco Score: ")+"<br>";
-      let novascore = Number(data["product"]["nova_group"]);
-      console.log(novascore)
-      res += nova(novascore, "Nova group: ");
+      try {
+        res += "<h5>Ingredients:</h5>";
+        for (let i = 0; i < data["product"]["ingredients"].length; i++) {
+          res +=
+            `<li>${data["product"]["ingredients"][i]["text"]}</li><br>`.replace(
+              /_/g,
+              ""
+            );
+        }
+      } catch (error) { }
+      try {
+        let nutriscore = data["product"]["nutriscore_grade"];
+        res += score(nutriscore, "Nutri Score: ") + "<br>";
+      } catch (error) { }
+      try {
+        let ecoscrore = data["product"]["ecoscore_grade"];
+        res += score(ecoscrore, "Eco Score: ") + "<br>";
+      } catch (e) { }
+      try {
+        let novascore = Number(data["product"]["nova_group"]);
+        console.log(novascore)
+        res += nova(novascore, "Nova group: ");
+      }catch(e){}
       resultEl.innerHTML += res;
     })
     .catch((error) => {});

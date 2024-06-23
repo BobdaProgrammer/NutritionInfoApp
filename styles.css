@@ -113,3 +113,17 @@ body {
   height: fit-content;
  }
  
+
+ .item{
+  width: 10em;
+  height: 15em;
+  max-height: fit-content;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid black;
+  box-shadow: 2px 2px 2px grey;
+ }
+ .search{
+  outline: none;
+  box-shadow: 2px 2px 2px solid black;
+ }
